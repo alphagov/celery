@@ -168,7 +168,11 @@ def extras(*p):
 
 def install_requires():
     """Get list of requirements required for installation."""
-    return reqs('default.txt')
+    return [req for req in reqs('default.txt') if 'git+git' not in req]
+
+def dependency_links():
+    """Get list of requirements required for installation."""
+    return [req for req in reqs('default.txt') if 'git+git' in req]
 
 
 def extras_require():
@@ -212,6 +216,7 @@ setuptools.setup(
     license='BSD',
     platforms=['any'],
     install_requires=install_requires(),
+    dependency_links=dependency_links(),
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     tests_require=reqs('test.txt'),
     extras_require=extras_require(),
