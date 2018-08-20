@@ -141,7 +141,14 @@ def reqs(*f):
                 os.path.join(os.getcwd(), 'requirements', *f)).readlines()
         ) if r]
 
-install_requires = reqs('default.txt')
+def install_requires():
+    """Get list of requirements required for installation."""
+    return [req for req in reqs('default.txt') if 'git+git' not in req]
+
+def dependency_links():
+    """Get list of requirements required for installation."""
+    return [req for req in reqs('default.txt') if 'git+git' in req]
+
 if JYTHON:
     install_requires.extend(reqs('jython.txt'))
 
@@ -193,7 +200,8 @@ setup(
     license='BSD',
     packages=find_packages(exclude=['ez_setup', 'tests', 'tests.*']),
     zip_safe=False,
-    install_requires=install_requires,
+    install_requires=install_requires(),
+    dependency_links=dependency_links(),
     tests_require=tests_require,
     test_suite='nose.collector',
     classifiers=classifiers,
